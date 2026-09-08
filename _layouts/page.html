@@ -1,8 +1,15 @@
 ---
 layout: base
 ---
+<!--
+  page.html:站点主页面布局(GitHub Pages / Jekyll)
+  这是所有普通页面渲染的入口模板:front matter 里声明 `layout: page` 的
+  Markdown 文档,其内容都会通过下方 Liquid 输出标记 content 注入到 <article> 中,
+  外层再由 base 布局补全 html/head/body 等页面骨架。
+-->
 <article class="post">
 
+  <!-- post-content:页面正文容器,Jekyll 会把 Markdown 转换后的 HTML 填充到这里 -->
   <div class="post-content">
     {{ content }}
   </div>

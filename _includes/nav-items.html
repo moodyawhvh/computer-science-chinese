@@ -1,7 +1,15 @@
+<!--
+  nav-items.html:站点顶部导航栏条目生成逻辑
+  被其他模板通过 {% raw %}{% include nav-items.html paths="..." %}{% endraw %} 调用,
+  参数 include.paths 是一个页面路径列表,按顺序生成对应的导航链接。
+-->
 {%- for path in include.paths -%}
+  <!-- 在 site.pages 里按路径查找页面对象;取 first 是因为路径唯一,只会有一个匹配 -->
   {%- assign hyperpage = site.pages | where: "path", path | first -%}
   {%- if hyperpage.title %}
+  <!-- 只有页面定义了 title 才渲染导航项,避免出现空链接 -->
   <a class="nav-item" href="{{ hyperpage.url | relative_url }}">{{ hyperpage.title | escape }}</a>
   {%- endif -%}
 {%- endfor -%}
+<!-- 导航末尾固定一个指向 OSSU 原仓库的 GitHub 链接 -->
 <a class="nav-item" href="https://github.com/ossu/computer-science">GitHub</a>
