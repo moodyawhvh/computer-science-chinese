@@ -1,35 +1,37 @@
-## Project 1B
+> 🌐 本文档由 [ossu/computer-science](https://github.com/ossu/computer-science) 翻译,英文原版见原项目。
 
-### all thanks to [palladian](https://github.com/palladian1)
+## 项目 1B
 
-### Linux Installation
+### 全部感谢 [palladian](https://github.com/palladian1)
 
-* Make sure you have a compatible compiler toolchain; if you're on Linux, gcc should work perfectly.
-* Install qemu-system-x86 (may be called qemu-system-i386 or qemu-system-x86_64; note that on some distros, qemu is the wrong package).
-* Install Perl.
-* Install gawk.
-* Install expect.
-* Make a src/ directory in the same directory as the project's test script.
-* Clone xv6 github repo and copy the source code in to your src/ directory.
-* Inside src/, run `make qemu-nox` to test whether xv6 is working. Exit xv6 with `Ctrl-a x`; if you forget this, you can also kill the qemu process. It's worth checking `top` or `htop` to make sure qemu isn't running anymore; sometimes it can keep going after you exit and consume a lot of resources.
-* Modify the Makefile to set `CPUS := 1`.
-* Run `make qemu-nox` again to test that xv6 still works.
+### Linux 环境安装
 
-### Instructions
+* 确保你有兼容的编译工具链;在 Linux 上 gcc 完全够用。
+* 安装 qemu-system-x86(在不同发行版上可能叫 qemu-system-i386 或 qemu-system-x86_64;注意某些发行版里名为 qemu 的包是错的)。
+* 安装 Perl。
+* 安装 gawk。
+* 安装 expect。
+* 在与项目测试脚本相同的目录下建一个 src/ 目录。
+* 克隆 xv6 的 GitHub 仓库,把源码复制到你的 src/ 目录中。
+* 在 src/ 内运行 `make qemu-nox` 测试 xv6 能否正常工作。用 `Ctrl-a x` 退出 xv6;如果忘了,也可以直接杀掉 qemu 进程。建议用 `top` 或 `htop` 确认 qemu 已经不在运行;有时它在你退出后仍会继续运行并占用大量资源。
+* 修改 Makefile,设置 `CPUS := 1`。
+* 再次运行 `make qemu-nox`,确认 xv6 仍能正常工作。
 
-* Your task is to create a new system call for xv6, `getreadcount()`, that will return the number of `read` syscalls that have previously taken place. Note that the count should be a global count, not a per-process count.
+### 任务说明
 
-### Suggested Approach
+* 你的任务是为 xv6 新增一个系统调用 `getreadcount()`,返回此前发生的 `read` 系统调用的次数。注意这个计数必须是全局计数,而不是按进程的计数。
 
-* Download the xv6 source code PDF (it's better organized there than in the code you downloaded). Read the table of contents to understand how sheets, pages, and lines are numbered. Then glance at the cross-references after that so you know how to find parts of the code if you need to.
-* Take a (very) quick look at the portions of the xv6 source code listed under `processes` and `system calls` on the table of contents, as well as `usys.S` in the `user-level` section. Don't worry about understanding it yet; you just need to see where each file is in the PDF so that you can follow along with the discussion video later, since the professor's code has a different directory layout than yours will.
-* Watch the video for discussion 2 on Project P1B, and follow along with your PDF copy of the xv6 code. Annotate it as the professor explains what each part does.
-* Read the background section linked on the project's Github page, annotating the xv6 code PDF.
-* Read through the xv6 PDF one more time, this time to get a general understanding of the `processes` and `system calls` sections, as well as `usys.S` and `user.h` (NOTE: the last one isn't included in the xv6 PDF, so you'll have to look at the actual code you downloaded). Don't worry about understanding every last line of code, just make sure you know where system calls are defined, how they're called, etc.
-* Modify the xv6 source code to add the new `getreadcount()` syscall. You will need to modify several files; I suggest marking your modifications with `// OSTEP project` to make it easy to find them later for debugging.
-* There is one other place you'll have to add code, which isn't included in the xv6 PDF: `user.h`.
-* Once you're done, run the test script. Test 1 runs a function that will make several `read` calls, then calls `getreadcount`. In order for your code to work, you must correctly keep track of the total number of `read` calls made by all processes.
-* If your code passes test 1, congratulations! You're done for now. Don't worry about test 2 until after you've watched the lectures on concurrency.
-* If your code didn't pass test 1, you can compare the expected output in `tests/1.out` with your test's actual output in `tests-out/1.out`. You can also look at `tests-out/1.err` to check for any error messages.
-* You can also test your code by loading up xv6 in your terminal with `make qemu-nox`. Type `ls` to see all files; you should see `test_1` and `test_2`. Run test 1 with `./test_1` to see what it prints out; you can compare that manually with the expected output.
-* Once you've watched the lectures on threads, concurrency, and locks: test 2 checks whether your implementation of `getreadcount` is thread-safe. It probably wasn't before, so in order to fix that, you'll have to add a lock. Then you can run the test script again and check that your code now passes both tests.
+### 建议做法
+
+* 下载 xv6 源码 PDF(它的排版比下载下来的代码更易读)。先看目录,弄清"页(sheet)、页码(page)、行号"的编号方式,再浏览后面的交叉引用,以便需要时能快速定位代码。
+* 非常快速地浏览一下目录中 `processes` 和 `system calls` 部分列出的源码文件,以及 user-level 部分的 `usys.S`。先不求看懂,只需要知道每个文件在 PDF 里的位置,方便稍后跟着讨论视频走,因为教授的代码目录结构和你的不一样。
+* 观看项目 P1B 的讨论课 2(discussion 2)视频,对照你手里的 xv6 代码 PDF,在教授讲解每个部分的作用时做好批注。
+* 阅读项目 GitHub 页面上链接的背景资料,同时在 xv6 代码 PDF 上做批注。
+* 再通读一遍 xv6 PDF,这次目标是整体理解 `processes` 和 `system calls` 两节,以及 `usys.S` 和 `user.h`(注意:最后一项不在 xv6 PDF 里,你需要看实际下载的代码)。不必逐行看懂,只要弄清系统调用在哪里定义、如何被调用等即可。
+* 修改 xv6 源码,添加新的 `getreadcount()` 系统调用。你需要改动多个文件;建议给自己的改动加上 `// OSTEP project` 标记,方便之后调试时查找。
+* 还有一处需要加代码的地方不在 xv6 PDF 里:`user.h`。
+* 完成后运行测试脚本。测试 1 会运行一个发起多次 `read` 调用的函数,然后调用 `getreadcount`。要让代码通过,你必须正确统计所有进程发出的 `read` 调用总数。
+* 如果通过了测试 1,恭喜!现阶段任务完成。在学习并发相关课程之前,不用管测试 2。
+* 如果没通过测试 1,可以把 `tests/1.out` 中的期望输出与你自己的实际输出 `tests-out/1.out` 对比,也可以查看 `tests-out/1.err` 里的错误信息。
+* 你也可以在终端里用 `make qemu-nox` 启动 xv6 来手动测试。输入 `ls` 查看所有文件,应该能看到 `test_1` 和 `test_2`。用 `./test_1` 运行测试 1 并观察输出,可以手动与期望输出对比。
+* 学完线程、并发与锁的课程之后:测试 2 检验你的 `getreadcount` 实现是否线程安全。之前八成不是线程安全的,解决办法是加一把锁。然后重新运行测试脚本,确认两个测试都能通过。

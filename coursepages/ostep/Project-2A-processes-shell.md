@@ -1,45 +1,47 @@
-## Project 2A
-### all thanks to [Palladian](https://github.com/palladian1/)
+> 🌐 本文档由 [ossu/computer-science](https://github.com/ossu/computer-science) 翻译,英文原版见原项目。
 
-- [x] Interactive mode
-- [x] Batch mode
+## 项目 2A
+### 全部感谢 [Palladian](https://github.com/palladian1/)
+
+- [x] 交互模式
+- [x] 批处理模式
 - [x] exit
 - [x] cd
 - [x] path
-- [x] Redirection
-- [x] Parallel commands
+- [x] 输出重定向
+- [x] 并行命令
 
-### Tips
+### 提示
 
-* Watch the video for discussion 3 on the Unix shell.
-* Read chapter 5 in the OSTEP book.
-* Start by implementing a shell that only does one thing: prints the prompt, then exits when you type `exit`. Then add `cd`, then `path`. Then implement the ability to execute commands with `execv`, then add batch mode, then redirection, and finally parallel commands.
-* All of the test scripts will use batch mode and redirection, so until you've got those done, you'll have to test your shell manually.
-* When you implement the `path` command, make sure you can handle both absolute and relative paths (i.e., `path tests` as well as `path /usr/bin`.
-* It's tricky to get the errors down right, so just add error messages wherever it seems reasonable, then run the test scripts and modify your code until you're reporting errors exactly when you're supposed to. If you're running test `i`, you can check `tests/i.err` and `tests/i.rc` to see how many errors your shell should generate and compare to `tests-out/i.err` and `tests-out/i.rc`.
-* If you run into issues with test 3 where the test expects something like `ls: cannot access ...` and your shell outputs `/bin/ls: cannot access ...` or `/usr/bin/ls: cannot access ...`, try modifying your $PATH environment variable to start with `/bin`. If that doesn't work, just modify `tests/3.err` to match the output your system gives. You can't modify your system's output without messing with the implementation of `ls` and/or `execv`, so it's okay to skip this test as long as it's working in spirit.
-* I had to edit `/tests/3.pre` to use `/bin/ls` due to how it's set up on my system, in order to pass all the tests. Alternatively you can add `export PATH="/bin:$PATH"` to your `.profile` or `.bashrc` file.
+* 先观看 Unix shell 讨论课 3( discussion 3)的视频。
+* 阅读 OSTEP 书籍第 5 章。
+* 从只做一件事的 shell 开始:打印提示符,输入 `exit` 时退出。然后加 `cd`,再加 `path`。接着实现用 `execv` 执行命令,然后加批处理模式,再加重定向,最后实现并行命令。
+* 所有测试脚本都会用到批处理模式和重定向,所以在完成这两项之前,你只能手动测试 shell。
+* 实现 `path` 命令时,确保既能处理绝对路径也能处理相对路径(即 `path tests` 和 `path /usr/bin` 都要能用)。
+* 错误信息的细节很容易踩坑,所以先在看起来合理的地方都加上错误信息,然后跑测试脚本,反复修改代码,直到错误报告的时机与要求完全一致。跑第 i 个测试时,可以查看 `tests/i.err` 和 `tests/i.rc`,看 shell 应该产生多少错误,再与 `tests-out/i.err` 和 `tests-out/i.rc` 对比。
+* 如果测试 3 期望输出形如 `ls: cannot access ...`,而你的 shell 输出 `/bin/ls: cannot access ...` 或 `/usr/bin/ls: cannot access ...`,试着把 $PATH 环境变量改成以 `/bin` 开头。如果还不行,直接修改 `tests/3.err` 来匹配你系统的输出即可。不改 `ls` 和/或 `execv` 的实现就无法改变系统输出,所以只要语义上工作正常,跳过这个测试也没问题。
+* 由于我系统的配置原因,我不得不修改 `/tests/3.pre` 改用 `/bin/ls` 才通过全部测试。或者你也可以在 `.profile` 或 `.bashrc` 里加上 `export PATH="/bin:$PATH"`。
 
-### Memory Management Traps and Pitfalls
+### 内存管理的陷阱与坑
 
-* This assignment makes it really easy to create pointers to stack variables that will no longer exist once they're out of scope, thus causing a segmentation fault. Make sure that if you set a pointer to point to a string, that string is something you allocated on the heap, and not on the stack.
+* 这个作业非常容易制造指向栈变量的指针,而变量一出作用域就不复存在,从而导致段错误(segmentation fault)。务必保证:如果你让一个指针指向字符串,那个字符串必须是你在堆上分配的,而不是栈上的。
 
-* That said, if you do use a string on the stack, you can copy it into a heap-allocated string using `strcpy()`, `strncpy()`, `strcat()`, and `strncat()`.
+* 话虽如此,如果你确实用了栈上的字符串,可以用 `strcpy()`、`strncpy()`、`strcat()`、`strncat()` 把它复制进堆分配的字符串。
 
-* Only use `strcpy()` and `strcat()` for fixed-size strings and make sure the buffer you're copying into has enough space to hold the string, plus an extra character for `\0`.
+* `strcpy()` 和 `strcat()` 只用于固定长度的字符串,并确保目标缓冲区足够容纳整个字符串外加一个 `\0` 结尾符。
 
-* For `strncpy()` and `strncat()`, make sure `n` is large enough to fit the `\0` terminator, or add it manually.
+* 对于 `strncpy()` 和 `strncat()`,确保 `n` 足够容纳 `\0` 结尾符,或者手动补上。
 
-* Watch out for use-after-frees, especially in the implementation of `path`.
+* 小心 use-after-free(释放后使用),尤其是在实现 `path` 时。
 
-* Make sure you free any strings from `getline()` and `strdup()`, but watch out for double-frees, e.g. don't free a substring of a string you already freed.
+* 记得释放来自 `getline()` 和 `strdup()` 的字符串,但也要小心双重释放(double-free),例如不要释放某个已释放字符串的子串。
 
-* Avoid the C library function `strtok()`; it's not thread-safe. Use `strsep()` instead.
+* 避免使用 C 库函数 `strtok()`;它不是线程安全的。改用 `strsep()`。
 
-* When you use `strsep()`, make sure you keep a copy of the original pointer to the string around so that you can free it later, because `strsep()` will modify the pointer, so if you free that later on, you'll corrupt the page table.
+* 使用 `strsep()` 时,务必保留一份指向原始字符串的指针副本,以便之后释放,因为 `strsep()` 会修改指针本身;如果之后释放的是被改过的指针,你会破坏页表。
 
-* After calling `strsep(&buf, delim)`, check whether `buf` is `NULL` before dereferencing it.
-* General C coding practice: if you allocate memory for a data structure inside a function, you should free it in the same function. If you allocate memory in a dedicated `create_xxx` function, you should have a corresponding `destroy_xxx` function. That way, you always allocate and free memory at the same function depth, which makes it easier to avoid memory errors.
-* After every call to `malloc`, `calloc`, or `realloc`, check whether the result is `NULL`.
-* Use `calloc` instead of `malloc` if you're creating an array of pointers to avoid creating pointers to garbage values.
-* in `update_path` I had to fix that issue where most of the tests do `path /bin /usr/bin`, but one of them did `path tests`. So i just assumed that if your path starts with a slash, it's an absolute path and you should copy it in as is; if it doesn't, it's a relative path and you should add a ./ at the beginning.
+* 调用 `strsep(&buf, delim)` 之后,解引用 `buf` 前先检查它是否为 `NULL`。
+* C 语言通用实践:在某个函数里为数据结构分配的内存,应在同一个函数里释放。如果你在专门的 `create_xxx` 函数里分配内存,就应有对应的 `destroy_xxx` 函数。这样内存的分配与释放总是发生在同一函数层级,更容易避免内存错误。
+* 每次调用 `malloc`、`calloc` 或 `realloc` 之后,检查返回值是否为 `NULL`。
+* 创建指针数组时用 `calloc` 而不是 `malloc`,避免产生指向垃圾值的指针。
+* 在 `update_path` 里我修过这个问题:大多数测试用 `path /bin /usr/bin`,但有一个用 `path tests`。所以我假定:路径以斜杠开头就是绝对路径,原样复制;否则就是相对路径,要在开头加上 ./。

@@ -1,135 +1,70 @@
-## all thanks to [palladian](https://github.com/palladian1)
+> 🌐 本文档由 [ossu/computer-science](https://github.com/ossu/computer-science) 翻译,英文原版见原项目。
 
-### General Tips
+## 全部感谢 [palladian](https://github.com/palladian1)
 
-* Read chapter 9 in the OSTEP book and watch the video for discussion 5. Lottery ticket schedulers aren't discussed in the lectures, so you really do have to read the book for this one.
+### 通用提示
 
-* In general, you can't use C standard library functions inside the kernel, because the kernel has to initialize before it can execute library binaries.
+* 阅读 OSTEP 书籍第 9 章,并观看讨论课 5 的视频。彩票调度器(lottery scheduler)在授课视频里没讲,所以这部分真的必须读书。
 
-* The xv6 kernel has a "kernel version" of `printf`; it takes an additional integer argument that tells it whether to print to `stdout` or `stderr`. Note that it can only handle basic format strings like `"%d"` and not more complex ones like `"%6.3g"`; you can deal with this by manually adding spaces instead. It also has another similar function, `cprintf`.
+* 一般来说,内核里不能用 C 标准库函数,因为内核必须先完成自身初始化,才能执行库的二进制代码。
 
-* If you do want to use other library functions that aren't available inside the kernel (pseudo random number generators), you can see how those functions are implemented in P.J. Plauger's book, The Standard C Library, and then implement them yourself.
+* xv6 内核有一个"内核版" `printf`;它多接受一个整数参数,用来指定输出到 `stdout` 还是 `stderr`。注意它只支持 `"%d"` 这类基本格式串,不支持 `"%6.3g"` 这种复杂格式;解决办法是手动补空格。内核里还有一个类似的函数 `cprintf`。
 
-  ### Implementation
+* 如果你确实想用内核里没有的其他库函数(如伪随机数生成器),可以参考 P.J. Plauger 的《The Standard C Library》里这些函数的实现,然后自己动手写。
 
-  * You'll have to modify the same files you did in Project 1b in order to add the two new system calls.
-  * In order to understand how processes are created, remember that they start in the `EMBRYO` state before they become `RUNNABLE`--you'll have to find where that happens.
-  * System calls always have argument type `void`, so take a look at how system calls like `kill` and `read` manage to work around that limitation and get arguments (like integers and pointers) from user space. You might have to back a few steps in the chain that executes them.
-  * Make sure you're including `types.h` and `defs.h` wherever you need to access code from other parts of the kernel.
-  * In order to create the xv6 command `ps`, look at how `cat`, `ls`, and `ln` are implemented. Make sure to modify the Makefile to include the source code for your `ps` command.
+  ### 实现要点
 
+  * 添加两个新系统调用时,要修改的文件和项目 1b 相同。
+  * 理解进程如何创建:记住进程先处于 `EMBRYO` 状态,之后才变为 `RUNNABLE`——你要找到这个转换发生的位置。
+  * 系统调用的参数类型固定为 `void`,所以看看 `kill`、`read` 这类系统调用是如何绕过这个限制、从用户空间拿到参数(整数和指针)的。你可能需要沿着调用链往前倒几步。
+  * 凡是需要访问内核其他部分代码的地方,确保包含 `types.h` 和 `defs.h`。
+  * 要实现 xv6 命令 `ps`,先看看 `cat`、`ls`、`ln` 是怎么实现的。别忘了修改 Makefile,把 `ps` 的源码加进编译。
 
-## Spoilers below!
+## 剧透警告!
 
-### Solution walk through
+### 解法走查(节选)
 
-- Start from a fresh copy of the `xv6` source code.
+- 从一份全新的 `xv6` 源码副本开始。
 
-- `argint` and `argptr` are important functions. So `syscall`s take no arguments, but in reality, in user code you want to pass arguments to them.
+- `argint` 和 `argptr` 是关键函数。系统调用本身不带参数,但用户代码里实际上要给它传参数。
 
-- So the way you do that is the kernel will call the `syscall`, say, `sys_kill()` with no arguments, then `sys_kill` will use `argint()` to get the arguments from the call stack, then pass that to a function `kill(int pid)`.
+- 做法是:内核先调用无参的 `sys_kill()`,再由 `sys_kill` 用 `argint()` 从调用栈里取出参数,传给真正的 `kill(int pid)`。
 
-- So you can see there's a bunch of `extern int sys_whatever` function declarations below that; that means that these functions are defined in another file and should be pulled in from there as function pointers.
+- `syscalls.c` 里那一堆 `extern int sys_whatever` 声明,表示这些函数定义在别的文件里,会以函数指针形式引入。真正的系统调用实现不带 `sys_` 前缀,这些 `sys_whatever` 只是包装函数。所以要把 `sys_settickets` 和 `sys_getpinfo` 加进声明列表。
 
-- And these `sys_whatever` functions are basically just wrappers for the real `syscall`, which doesn't have the `sys_` at the beginning. So you need to add `sys_settickets` and `sys_getpinfo` to that list of function declarations.
+- 接着是一个函数指针数组,用的是老式 C 初始化写法 `int arr[] = { [0] 5, [1] 7}`。方括号里的 `SYS_fork` 等名字是 `syscall.h` 里定义的宏。要在数组里加两个指向 `sys_settickets`、`sys_getpinfo` 的条目,并在相应头文件里定义 `SYS_settickets` 和 `SYS_getpinfo`。
 
-- Then there's an array of function pointers; it's using this old-school C way of initializing arrays where you can do `int arr[] = { [0] 5, [1] 7}`.
+- 这些 `sys_` 包装函数定义在 `sysproc.c`。在那里创建 `int sys_settickets(void)` 和 `int sys_getpinfo(void)`。
 
-- And the names inside the square brackets `SYS_fork`, etc. are defined as preprocessor macros in another header file `syscall.h`.
+- 真正的 `settickets` 需要 int 参数,用 `argint` 从调用栈取出来传给它;`getpinfo` 需要指针,用 `argptr`。`sys_settickets` 的 if 语句里多了一个条件,因为票数不允许小于 1。
 
-- So you need to add two more entries in the array with function pointers to `sys_settickets` and `sys_getpinfo`, and then you need to define `SYS_settickets` and `SYS_getpinfo` in the relevant header file.
+- 每个系统调用还有一段汇编要执行;好在它只是预写好的宏,在 `usys.S` 末尾加两行 `SYSCALL(settickets)` 和 `SYSCALL(getpinfo)` 即可。
 
-- So then all these `sys_` wrapper functions are defined in `sysproc.c`.
+- 系统调用的最后一部分:在 `user.h` 里声明它们,用户代码才能调用。`struct pstat` 完整定义在 `pstat.h`,但 `user.h` 里也要声明,免得用户代码报错。所有使用系统调用或 xv6 标准库的用户代码都要包含 `user.h`。
 
-- So there, you need to create `int sys_settickets(void)` and `int sys_getpinfo(void)`.
+- 至此,操作系统层面两个系统调用的接线全部完成;接下来才是用普通函数 `settickets` 和 `getpinfo` 实现功能,然后实现调度器和 `ps` 程序。
 
-- The real `settickets` function will need an int argument, so you need to use `argint` there to grab it from the call stack and pass it to `settickets`; similarly, `getpinfo` will need a pointer, so you'll use `argptr`.
+- `pstat.h` 不是给调度器用的,是给 `ps` 程序用的(类似 Linux 的 `ps`),它只定义 `struct pstat`,没有对应的 .c 文件。
 
-- Also, there's an extra condition in the if statement for `sys_settickets`; that's because you're not allowed to use a number of tickets below 1.
+- 调度器的工作方式:进程创建时默认分配 1 张票;之后进程可以通过 `settickets` 系统调用自己设票数。
 
-- So then there's some assembly code that needs to run for each of the system calls; luckily, it's just a pre-written macro, so you don't have to write any assembly. that's in `usys.S`.
+- 第一步在 `proc.h`:进程由 `struct proc` 表示,给它加一个成员 `int tickets`。`int ticks` 成员是给 `ps` 用的,后面再说。
 
-- So you just add two lines at the bottom to create macros for `SYSCALL(settickets)` and `SYSCALL(getpinfo)`
+- `proc.h` 里的 `enum procstate` 列出了所有可能的进程状态。`EMBRYO` 表示正在创建;我 `grep` 了 `EMBRYO`,找到进程创建的位置来设置默认 1 张票——在 `proc.c` 里。
 
-- Last part for the `syscalls`: you need to declare them in a header file for user code to be able to call them. that's in `user.h`.
+- `proc.c` 中的 `allocproc` 负责初始化进程:遍历进程表 `ptable` 找未使用的槽位,找到后创建进程;我在那里加了 `p->tickets = 1;`。
 
-- So `struct pstat` will be properly defined in `pstat.h`, but you need to declare it in `user.h` as well so that user code doesn't complain when it sees it.
+- 下一个改动对应一条需求:子进程要继承父进程的票数。子进程由同一文件里的 `fork` 创建,其中 `curproc` 是当前进程,`np` 是新进程,于是设 `np->tickets = curproc->tickets`。
 
-- Basically, any user code that uses `syscalls` or C (really, `xv6`) standard library functions will have to include `user.h`.
+- 调度器需要生成一个伪随机数,然后把计数器从 0 开始遍历进程表,把每个进程的票数累加到计数器上;计数器一旦超过伪随机数就停下,运行那个进程。
 
-- So, so far, that's everything for the two system calls as far as the OS is concerned; now we just have to actually implement them with the regular functions `settickets` and `getpinfo`, then implement the scheduler and the `ps` program.
+- 伪随机数我是照着 P.J. Plauger 的《The Standard C Library》(一本带注释的 C 库源码大全)实现的 `rand` 和 `srand`:`srand` 设随机种子,`rand` 把它变成伪随机整数。其中整数与无符号整数之间来回转换的类型技巧,是为了避免有符号整数溢出(未定义行为);无符号溢出则没问题。我只做了一处提速:把 `% 32768` 写成 `& 32767`。
 
-- `pstat.h` is not for the scheduler, but for the `ps` program, which will work somewhat like the Linux `ps`. `pstat.h` is just to define the `struct pstat`, but there's no `.c` file to go with it.
+- 我用的"随机"种子是 `ticks`(计时器中断次数)——第一次运行是 0,然后 1、2……完全谈不上随机。关于 `ticks` 计数的几行代码是给 `ps` 用的,与调度器无关。
 
-- So the scheduler will work by assigning 1 ticket by default to each process when it's created; then processes can set their own tickets using the `settickets` system call.
+- 把它变成彩票调度器的核心改动就是计数器变量,外加一个统计已发彩票总数的 for 循环。
 
-- so first we need to make sure each process tracks its own tickets, then we need to assign a default of 1 ticket when creating them, then we need to write `settickets`.
-
-- the first part is in `proc.h`: processes are represented as a `struct proc`, so we add a new member for `int tickets`.
-
-- the `int ticks` member is for `ps`; I'll come back to that.
-
-- One other thing to note in `proc.h` is the `enum procstate`: you can see all the possible process states there. `EMBRYO` means it's in the process of creation; so what i did was `grep` for `EMBRYO` to find where the process was created in order to set the default tickets to 1. Turns out it's in `proc.c`.
-
-- Inside `proc.c`, there's a function `allocproc`, which initializes a process.
-
-- There's a process table called `ptable`, and `allocproc` looks through it to find an unused process.
-
-- Then when it does find it, it goes to create it; i added `p->tickets = 1;` there.
-
-- okay so the next change is to fit one of the requirements: child processes need to inherit the number of tickets from their parent process.
-
-- So child processes are created with `fork`, which is in the same file.
-
-- In `fork`, `curproc` is the current process, and `np` is the new process.
-
-- So i set `np->tickets = curproc->tickets`.
-
-- So the scheduler needs to generate a pseudo random number, then it should iterate through the process table with a counter initialized to 0, adding the number of tickets for each process to the counter. once the counter is greater than the pseudo random number, it stops and runs that process.
-
-- So I ended up looking in P.J. Plauger's The Standard C Library, which is just a big book of all the source code for the C library with commentary. It's pretty good; I don't know if it's still written that way though because the book is from the 80s.
-
-- So i just implemented C's `rand` and `srand` functions. `srand` sets a random seed (not so random, as you'll see later), then `rand` turns it into a pseudo random integer.
-
-- There's a bunch of type magic going on there between changes back and forth from integers to unsigned integers; that's to avoid signed integer overflow, which causes undefined behavior. unsigned integer overflow is okay though.
-
-- I only made one change to make it faster, which was to write `& 32767` instead of `% 32768`.
-
-- So you'll see the "random" seed i used: the number of `ticks`, which i think counts the number of timer interrupts so far.
-
-- Which is totally not random at all, since the first time this program gets run, it'll be 0, then 1, then 2, etc.
-
-- So there's some lines about counting `ticks`; that was for `ps`, not the scheduler.
-
-- The main change to make it a lottery scheduler is the counter variable.
-
-- And adding a for loop to count the total number of tickets that have been distributed.
-
-- So then at the very bottom of this file is the implementation of `settickets` and `getpinfo`.
-
-- So after initializing `counter` and `totaltickets`, there's for loop that counts the total numbers of tickets that have gone out to processes.
-
-- Then we get the winning ticket.
-
-- Let's discuss the original source code first. So first you acquire the lock. You'll release it at the very end. But in between, you have a for loop that iterates over all the processes in `ptable`.
-
-- Specifically, it iterates over only the processes in `RUNNABLE` state; if a process isn't `RUNNABLE`, it just `continue`s on to the next one. (This is for the round-robin scheduling mechanism that's already in the code.)
-
-- So now it's gonna switch to the very first `RUNNABLE` process it finds. Like, switching to executing it.
-
-- So first, `c` represents the current CPU. so it sets the current CPU to run the process it found with `c->proc = p;`.
-
-- Then it calls this function, `switchuvm(p)`, which sets up the virtual memory address space for `p`. Then it sets the process's state to `RUNNING`.
-
-- And then `swtch` is where the magic happens: that one swaps out the register contents of the OS and scheduler content with the saved-in-memory register contents of the process `p`.
-
-- So as soon as `swtch` executes, the CPU will continue executing instructions, but now they're the process's instructions. So this scheduler function just hangs there.
-
-- Eventually, when a timer interrupt goes off, the processor will use another `swtch` call but with the arguments reversed to swap the scheduler's register contents from memory into the CPU's registers and save the process's register contents. At which point execution will continue at this exact point.
-
-- So now `switchkvm` will set up the kernel's virtual memory address space.
-
-- These 5 lines are the context switch:
+- 上下文切换(原版代码,5 行):
 
   ```c
   c->proc = p;
@@ -140,11 +75,9 @@
   switchkvm();
   ```
 
-- So then we go on to the next iteration of the inner for loop, which finds the next `RUNNABLE` process and repeats.
+  流程:先拿锁(最后才释放);for 循环遍历 `ptable`,只挑 `RUNNABLE` 的进程(这是原有的轮转调度);找到第一个 `RUNNABLE` 进程后,`c`(当前 CPU)设为运行它;`switchuvm(p)` 建立该进程的虚拟内存地址空间,状态置为 `RUNNING`;`swtch` 是魔法所在——把 OS/调度器的寄存器内容换出,换入保存在内存里的进程 `p` 的寄存器内容。`swtch` 一执行,CPU 继续执行的就是进程的指令了,调度器函数停在那里。之后计时器中断到来时,处理器会用参数相反的 `swtch` 调用换回调度器的寄存器、保存进程的寄存器,并从断点继续执行。`switchkvm` 则切回内核的虚拟内存地址空间。
 
-- Only once we've executed all the `RUNNABLE` processes do we exit the inner for loop and release the lock.
-
-- Original source code is structured like this (this is pseudocode):
+- 原版源码结构(伪代码):
 
   ```python
   while (1) {
@@ -154,13 +87,13 @@
       run it
   ```
 
-- New code is structured like this (this is pseudocode):
+- 新代码结构(伪代码):
 
   ```python
   while (1) {
-    count the total tickets allotted to all processes // one for loop here
+    count the total tickets allotted to all processes // 一个 for 循环
     get the winning ticket number
-    iterate over processes: // another for loop here
+    iterate over processes: // 另一个 for 循环
       if not runnable:
         continue
       add its tickets to counter
@@ -169,34 +102,18 @@
       run it
   ```
 
-- We ignore the tickets of non-RUNNABLE processes.
+- 非 `RUNNABLE` 进程的票直接忽略。票并不编号:每个进程只是持有一定数量的票,我们从头累加,直到越过第 `n` 张,`n` 即中奖号码。例如进程 A 有 5 张票、B 有 7 张、C 有 2 张:中奖号是 3 则 A 运行,8 则 B 运行,12 则 C 运行。0-4 归 A,5-11 归 B,12-13 归 C。
 
-- So the tickets aren't numbered; each process just has a set amount of tickets, and we just count up until we've passed `n` tickets, where `n` is the winner.
+- `settickets` 很直白:拿锁、设票数、放锁。
 
-- For example if proc A has 5 tickets and proc B has 7, proc C has 2. if the winning number is 3, then A would run; if it's 8, then B would run; if it's 12, then C would run.
+- `getpinfo` 大致如下:`p` 是指向 `struct pstat`(定义在 `pstat.h`)的指针,其每个成员都是一个数组,每个进程占一项。先判空指针;遍历进程表,把第 i 个进程的对应值填进 `p` 的各成员第 i 项。
 
-- A winner in 0-4 would be A, 5-11 would be B, and 12-13 would be C.
+- 最后的收尾:在 `defs.h` 里加上 `struct pstat` 和 `settickets`、`getpinfo` 的声明;最后一个文件是 `ps.c`,实现类似 Linux `ps` 的程序——调用 `getpinfo` 填充 `struct pstat`,打印每个在用进程的信息;再改 Makefile 把 `ps.c` 加进编译,完工!
 
-- So `settickets` is pretty basic: you just acquire a lock, set the tickets for the process, release the lock.
+- 顺便解释为什么调度器里要记 `ticks`:`ps` 要打印每个进程运行了多久,所以需要统计它实际执行的时间片数。
 
-- For `getpinfo` basically it works like this:
+- 最后在 `/src` 目录运行 `make qemu`,确认一切正常。
 
-- `p` is a pointer a `struct pstat`, as defined in `pstat.h`. each of its members is an array, with one entry per process.
+---
 
-- Check for a null pointer.
-
-- Iterate over the process table and set `proc_i` to the i-th process.
-
-- Set the i-th entry of each member of `p` to the value for this process.
-
-- One last bookkeeping piece: we need to add declarations for `struct pstat` and the `settickets` and `getpinfo` system calls in `defs.h`.
-
-- And then the last file is `ps.c`, which implements the `ps` program, similar to Linux's `ps`. it just calls `getpinfo` to fill a `struct pstat`, then prints out the info for each process in use.
-
-- And then you just modify the Makefile to include `ps.c` in the compilation, and we're done!
-
-- Oh and this is why we needed the ticks in the scheduler: `ps` will print out how long each process has run.
-
-- So it needs to time the number of ticks that it actually executed.
-
-- FINALLY run `make qemu` in the `/src` directory to make sure it's all working.
+> 📝 **译注**:本文原文件超过 10000 字符,以上为核心章节完整翻译;"解法走查"一节为节选精编,保留了实现顺序、上下文切换代码与彩票算法示例等关键内容,省略了部分逐步口述细节,完整英文版见[原文](https://github.com/ossu/computer-science/blob/master/coursepages/ostep/Scheduling-xv6-lottery.md)。
