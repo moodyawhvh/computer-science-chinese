@@ -1,17 +1,19 @@
-# Curricular Guidelines
+> 🌐 本文档由 [ossu/computer-science](https://github.com/ossu/computer-science) 翻译,英文原版见原项目。
 
-[Curriculum Guidelines for Undergraduate Programs in Computer Science](https://www.acm.org/binaries/content/assets/education/cs2013_web_final.pdf)
+# 课程设计准则
 
-Our curricular guidelines are from the 2013 report of the Association for Computing Machinery and the Institute of Electrical and Electronics Engineers. This report is the most recent in a series of such reports outlining the expectations of undergraduate degrees in Computer Science. The report outlines critical Knowledge Areas and topics within them. It drills down further to outline specific learning goals, going so far as to outline what concepts a student must be able to explain vs concepts a student must be able to demonstrate using in practice.
+[计算机科学本科课程指南(CS2013)](https://www.acm.org/binaries/content/assets/education/cs2013_web_final.pdf)
 
-The CS2023 is currently under development. Track its progress to release [here](https://csed.acm.org/).
+我们的课程设计准则来自美国计算机协会(ACM)与电气电子工程师学会(IEEE)2013 年联合发布的报告。该报告是这一系列报告中最新的一个,阐述了计算机科学本科培养的预期目标。报告划定了各关键知识领域及其中的具体主题,并进一步细化到明确的学习目标——甚至区分了学生必须能够解释的概念,与学生必须能够在实践中动手演示的概念。
 
-## Organizations publishing:
+CS2023(新版报告)目前正在制定中,可[在这里](https://csed.acm.org/)跟踪其发布进度。
 
-### The Association for Computing Machinery
+## 发布机构:
 
-The Association for Computing Machinery (ACM) is an international learned society for computing. It was founded in 1947, and is the world's largest scientific and educational computing society. The ACM is a non-profit professional membership group, with more than 100,000 members as of 2011.
+### 美国计算机协会(ACM)
 
-### Institute of Electrical and Electronics Engineers
+美国计算机协会(Association for Computing Machinery, ACM)是一个国际性的计算领域学术组织,成立于 1947 年,是世界上最大的计算机科学与教育学会。ACM 是一个非营利的专业会员组织,截至 2011 年拥有超过 10 万名会员。
 
-The Institute of Electrical and Electronics Engineers (IEEE) is a professional association formed in 1963 from the amalgamation of the American Institute of Electrical Engineers and the Institute of Radio Engineers. As of 2018, it is the world's largest association of technical professionals with more than 423,000 members in over 160 countries around the world. Its objectives are the educational and technical advancement of electrical and electronic engineering, telecommunications, computer engineering and allied disciplines.
+### 电气电子工程师学会(IEEE)
+
+电气电子工程师学会(Institute of Electrical and Electronics Engineers, IEEE)是一个专业协会,成立于 1963 年,由美国电气工程师学会(AIEE)与无线电工程师学会(IRE)合并而来。截至 2018 年,它是全球最大的技术专业协会,在 160 多个国家拥有超过 42.3 万名会员。其宗旨是推动电气与电子工程、电信、计算机工程及相关学科在教育与技术上的进步。

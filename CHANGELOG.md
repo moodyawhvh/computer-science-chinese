@@ -1,331 +1,168 @@
-# Change Log
+> 🌐 本文档由 [ossu/computer-science](https://github.com/ossu/computer-science) 翻译,英文原版见原项目。
 
-**Note**: The curriculum is currently undergoing review for v9. This consists largely of checking our recommendations against our [curricular guidelines](CURRICULAR_GUIDELINES.md), adding missing topics and cutting redundant or out of scope courses. As Requests for Comment in this effort are completed, changes are made immediately to the curriculum. When the overall review is complete we will notate the version bump to v9.
+# 变更日志
 
-All notable changes to this project will be documented in this file.
-This project adheres *in spirit* to [Semantic Versioning](http://semver.org/):
-- "MAJOR" updates correspond to changing the topics studied within a subject
-- "MINOR" updates correspond to changing courses without changing the topics
-- "PATCH" updates correspond to aesthetic and non-essential additions/removals or changing order of classes for better progression
+**注意**:课程体系正在为 v9 进行整体审校,主要是对照[课程设计准则](CURRICULAR_GUIDELINES.md)核查现有推荐课程,补充缺失主题,删减冗余或超纲课程。相关的意见征求(RFC)一旦通过,改动会立即应用到课程体系。整体审校完成后,版本号将升级到 v9。
+
+本项目的所有重要变更都会记录在本文件中。
+本项目*在精神上*遵循[语义化版本(Semantic Versioning)](http://semver.org/):
+- "MAJOR(主版本)"更新:改变了某学科内部所学的主题
+- "MINOR(次版本)"更新:更换了课程但没有改变主题
+- "PATCH(修订)"更新:美观性或非实质性增删,或为优化进阶路径而调整课程顺序
 
 ## [8.0.0] 2017-11-01
-### Added
-- extras/readings: "The System Design Primer"
-- extras/readings: "Category Theory for Programmers: The Preface"
-- extras/readings: "Programming Languages: Application and Interpretation"
-- extras/readings: "Programming and Programming Languages"
-- CONTRIBUTING: "Learning Git" section to the contributor guidelines page
-- Core Math: Added "Essence of Linear Algebra" as pre-requisite to "Linear Algebra: Foundations to Frontiers"
+### 新增
+- extras/readings:《The System Design Primer》
+- extras/readings:《Category Theory for Programmers: The Preface》
+- extras/readings:《Programming Languages: Application and Interpretation》
+- extras/readings:《Programming and Programming Languages》
+- CONTRIBUTING:贡献者指南页面新增"学习 Git"小节
+- 核心数学:新增《Essence of Linear Algebra》作为《Linear Algebra: Foundations to Frontiers》的先修课程
 
-### Updated
-- Moved "Introduction to Mathematical Thinking" to extras/courses
-- Moved "Hack the Kernel" (ops-class) from Advanced Systems to Core Systems
-- Core Systems: "Operating Systems: Three Easy Pieces" is no longer required, but is recommended as companion text to "Hack the Kernel"
-- Core Theory: Replaced Coursera with Lagunita as the host for Stanford Algorithms, since Coursera uses dark patterns to trick users into paying
+### 更新
+- 《Introduction to Mathematical Thinking》移至 extras/courses
+- 《Hack the Kernel》(ops-class)从高级系统移入核心系统
+- 核心系统:《Operating Systems: Three Easy Pieces》不再是必修,改为《Hack the Kernel》的配套教材推荐
+- 核心理论:斯坦福算法课的托管平台由 Coursera 换成 Lagunita,因为 Coursera 使用暗黑模式诱导用户付费
 
 ## [7.2.2] 2017-07-02
-### Added
-- "Haskell Programming from First Principles" book as a paid alternative to learn Haskell
-- "Think Python" to extras/readings
-- FAQ entries and links under relevant courses
-- "Category Theory: A Gentle Introduction" to extras/readings
+### 新增
+- 《Haskell Programming from First Principles》一书,作为学习 Haskell 的付费替代资源
+- extras/readings 收录《Think Python》
+- 在相关课程下补充 FAQ 条目和链接
+- extras/readings 收录《Category Theory: A Gentle Introduction》
 
 ## [7.2.1] 2017-05-14
-### Updated
-- Networking course should take 8 weeks to complete
-- Fixed spelling error
+### 更新
+- 计算机网络课程的预计完成时间应为 8 周
+- 修复拼写错误
 
-### Added
-- Introduction to Haskell course to [extras/courses](extras/courses.md)
+### 新增
+- [extras/courses](extras/courses.md) 收录 Introduction to Haskell 课程
 
 ## [7.2.0] 2017-04-28
-### Added
-- Software Testing course
-- Link to Stanford Lagunita's Algorithms: Design and Analysis
-- Added link to the section on parametric equations and polar coordinates from MIT's Single Variable Calculus course in order to properly prepare students for Multivariable Calculus
+### 新增
+- 软件测试课程
+- 斯坦福 Lagunita 的《Algorithms: Design and Analysis》链接
+- 补充 MIT 单变量微积分课程中参数方程与极坐标小节的链接,为多变量微积分做好衔接
 
 ## [7.1.2] 2017-04-22
-### Updated
-- Add link to Mega Project List in the introduction of the Projects section
+### 更新
+- 在项目区(Plojects)介绍中添加 Mega Project List 链接
 
 ## [7.1.1] 2017-04-11
-### Updated
-- Final touch to release
+### 更新
+- 发布前的最后打磨
 
 ## [7.1.0] 2017-04-10
-### Updated
-- Reverted reformat of programming languages course
+### 更新
+- 回滚了编程语言课程的一次格式调整
 
-### Added
-- Reliable Distributed Algorithms courses
-- New Introduction to CS course
+### 新增
+- 可靠分布式算法系列课程
+- 全新的计算机导论课程
 
 ## [7.0.2] 2017-03-30
-### Updated
-- Moved optional online learning courses to extras/courses in a new section
-- Moved alternate computer architecture course to extras/courses
+### 更新
+- 将可选的在线学习课程移至 extras/courses 的新小节
+- 将备选的计算机体系结构课程移至 extras/courses
 
-### Added
-- Scala specialization under Advanced applications
+### 新增
+- 高级应用下新增 Scala 专项课程
 
-### Removed
-- Removed all but one choice for required readings to make the curriculum simpler
+### 移除
+- 必读书目只保留一个选择,简化课程体系
 
 ## [7.0.1] 2017-03-11
-### Updated
-- Fixed link to Bradfield's DIY computer science page
+### 更新
+- 修复 Bradfield DIY 计算机科学页面的链接
 
-### Added
-- Note under Calculus One with links to errata and course progression recommendations
-- Optional courses under extras:
-  - Strang's course on linear algebra
-  - Berkeley's Structure and Interpretation of Computer Programs
-- Optional readings under extras:
-  - Van Roy's advanced programming book
-  - P&H's computer architecture book
-  - Skiena's algorithms book
-  - Strang's linear algebra book
-  - Database Management Systems book
-  - Tarr's book on creating your own Domain-specific language
-  - Readings from various authors on distributed systems
+### 新增
+- 微积分一(Calculus One)课程下添加勘误表和课程推进建议的链接
+- extras 下的可选课程:
+  - Strang 的线性代数课程
+  - 伯克利《Structure and Interpretation of Computer Programs》
+- extras 下的选读书目:
+  - Van Roy 的高级编程书籍
+  - P&H 的计算机体系结构书籍
+  - Skiena 的算法书籍
+  - Strang 的线性代数书籍
+  - 《Database Management Systems》
+  - Tarr 关于创建领域专用语言的书
+  - 多位作者关于分布式系统的文章
 
 ## [7.0] 2017-03-09
-Complete overhaul of program structure
+课程结构全面改版
 
-### Updated
-- Clarified contributor guidelines and moved them to separated file
-- Switched from many subjects to just four subjects with many topics
-- Consolidated free-books.md and paid-books.md into readings.md
-- Consolidated free-courses.md and paid-courses.md into courses.md
-- Replace old "How to Code" with new "How to Code" (Software Development MicroMasters)
-- Replace Princeton Algorithms (moved to [alternative courses](#extras/courses.md)) with Stanford Algorithms
+### 更新
+- 澄清贡献者指南并拆分为独立文件
+- 从多个学科精简为四个学科、下设多个主题
+- 将 free-books.md 与 paid-books.md 合并为 readings.md
+- 将 free-courses.md 与 paid-courses.md 合并为 courses.md
+- 用新版《How to Code》(软件开发 MicroMasters)替换旧版
+- 用斯坦福算法课替换普林斯顿算法课(后者移至[备选课程](extras/courses.md))
 
-### Added
-- Indicate prerequisites for all courses
-- Requirements: subject/topic requirements and project requirements
-- Required readings on Haskell, Prolog, Operating Systems
-- Courses: Dan Grossman's Programming Languages
-- Courses: From Nand to Tetris
-- Elective course: Intro to Parallel Programming
-- Elective course: LAFF: Programming for Correctness
-- Elective course: Introduction to Mathematical Thinking
-- Elective courses: Electricity and Magnetism
-- Elective courses: MIT's Computation Structures
-- Elective course: Multivariable Calculus
-- Elective course: ops-class.org
-- Elective course: Automata Theory
-- Elective course: Introduction to Logic
-- Elective course: Computational Geometry
-- Elective course: Formal Concept Analysis
-- Elective course: Game Theory
-- Elective specializations:
-  - Robotics
-  - Data Mining
-  - Big Data
-  - Internet of Things
-  - Cloud Computing
-  - Full Stack Web Development
-  - Data Science
-- Pro specializations:
-  - Mastering Software Development in R
-  - Artificial Intelligence Engineer
-  - Machine Learning Engineer
-  - Cybersecurity
-  - Android Developer
+### 新增
+- 为所有课程标注先修要求
+- 明确要求:学科/主题要求与项目要求
+- Haskell、Prolog、操作系统的必读书目
+- 课程:Dan Grossman 的《Programming Languages》
+- 课程:《From Nand to Tetris》
+- 选修:《Intro to Parallel Programming》
+- 选修:《LAFF: Programming for Correctness》
+- 选修:《Introduction to Mathematical Thinking》
+- 选修:《Electricity and Magnetism》
+- 选修:MIT《Computation Structures》
+- 选修:《Multivariable Calculus》
+- 选修:ops-class.org
+- 选修:《Automata Theory》
+- 选修:《Introduction to Logic》
+- 选修:《Computational Geometry》
+- 选修:《Formal Concept Analysis》
+- 选修:《Game Theory》
+- 选修专项:
+  - 机器人
+  - 数据挖掘
+  - 大数据
+  - 物联网
+  - 云计算
+  - 全栈 Web 开发
+  - 数据科学
+- 进阶专项:
+  - 《Mastering Software Development in R》
+  - 人工智能工程师
+  - 机器学习工程师
+  - 网络安全
+  - Android 开发者
 
-### Removed
-- Removed many dead links and obsolete courses
-- Removed per-course project requirement
-- Course: Object-Oriented Programming in Java
-- Course: Functional Programming in Scala
-- Course: Computer Architecture (but left as a footnote)
-- Course: Intro to Theoretical Computer Science
-- Course: Software Processes and Agile Practices
-- Course: Operating Systems & System Programming
-- Course: Introduction to Cyber Security
-- Course: Parallel Computer Architecture and Programming
-- Course: UX Design for Mobile Developers
+### 移除
+- 清理大量失效链接和过时课程
+- 取消逐门课程的项目要求
+- 课程:《Object-Oriented Programming in Java》
+- 课程:《Functional Programming in Scala》
+- 课程:《Computer Architecture》(保留为脚注)
+- 课程:《Intro to Theoretical Computer Science》
+- 课程:《Software Processes and Agile Practices》
+- 课程:《Operating Systems & System Programming》
+- 课程:《Introduction to Cyber Security》
+- 课程:《Parallel Computer Architecture and Programming》
+- 课程:《UX Design for Mobile Developers》
 
 ## [6.0] 2016-10-09
-### Updated
-- Put Calculus One before and together with Mathematics for Computer Science
-- Improve text in "Order of the classes"
+### 更新
+- 将微积分一(Calculus One)前移,与《Mathematics for Computer Science》同步学习
+- 改进"课程顺序"部分的文字
 
-### Added
-- Create public Trello board with the new curriculum version
-- Create the section "How to track and show your progress" in "How to use this guide"
-- Add PROJECTS.md file
-- Copy all sections of curriculum to PROJECTS.md
+### 新增
+- 为新版课程体系创建公开的 Trello 看板
+- 在"如何使用本指南"中新增"如何跟踪和展示你的进度"小节
+- 添加 PROJECTS.md 文件
+- 将课程体系的各章节复制到 PROJECTS.md
 
-### Removed
-- Remove "Next Goals" section
-- Remove reference to OSSU web app
+### 移除
+- 移除"下一步目标"小节
+- 移除对 OSSU 网页应用的引用
 
-## [5.1.0] 2016-08-20
-Update to latest version of Math for Computer Science:
+---
 
-### Updated
-- Section: **Math (Discrete Math)**
-  - Mathematics for Computer Science
-
-## [5.0.0] 2016-08-20
-Due to removed course, we had the following updates:
-
-### Removed
-- Section: **Natural Language Processing**
-  - Natural Language Processing
-
-### Added
-- Section: **Natural Language Processing**
-  - Introduction to Natural Language Processing
-
-## [4.1.0] 2016-08-05
-Due to Coursera's platform changes, we had the following updates:
-### Fixed
-- Section: **Big Data**
-  - Introduction to Big Data
-
-## [4.0.0] 2016-07-30
-Due to Coursera's platform changes, we had the following updates:
-
-### Removed
-- Section: **Theory**
-  - Automata
-- Section: **Math (Linear Algebra)**
-  - Coding the Matrix: Linear Algebra through Computer Science Applications
-- Section: **Parallel Computing**
-  - Heterogeneous Parallel Programming
-- Section: **Natural Language Processing**
-  - Natural Language Processing
-
-### Fixed
-- Section: **Computer Networks**
-  - Computer Networks
-- Section: **Compilers**
-  - Compilers
-
-### Added
-- Section: **Theory**
-  - Intro to Theoretical Computer Science
-- Section: **Math (Linear Algebra)**
-  - Linear Algebra - Foundations to Frontiers
-- Section: **Parallel Computing**
-  - Parallel Computer Architecture and Programming
-- Section: **Natural Language Processing**
-  - Natural Language Processing
-
-## [3.0.0] 2016-05-04
-### Removed
-- Section: **Introduction to Computer Science**:
-	- Introduction to Computer Science and Programming Using Python
-	- From Nand to Tetris (Part 1)
-
-### Added
-- Section: **Introduction to Computer Science**:
-	- Introduction to Computer Science - CS50
-
-## [2.0.1] 2016-04-04
-### Fixed
-- Now students should enroll through our [web app](https://ossu.firebaseapp.com).
-
-## [2.0.0] 2016-03-17
-### Fixed
-- Program Design section course's names and links
-
-### Removed
-- **Introduction to Computer Science**:
-	- Introduction to Computer Science
-	- Introduction to Computational Thinking and Data Science
-- **Algorithms**
-	- Analysis of Algorithms
-- **Programming Paradigms**
-	- Principles of Reactive Programming
-- **Math (Calculus)**
-	- Multivariable Calculus
-- **Software Architecture**:
-	- Web Application Architectures
-- **Software Engineering**:
-	- Agile Development Using Ruby on Rails - Basics
-	- Agile Development Using Ruby on Rails - Advanced
-	- Startup Engineering
-- **Computer Architecture**:
-	- The Hardware/Software Interface
-- **Operating Systems**:
-	- Operating System Engineering
-- **Computer Networks**:
-	- Introduction to Computer Networking
-- **Cryptography**:
-	- Applied Cryptography
-
-**ps**: These removed courses are now in the [extras](https://github.com/ossu/computer-science/tree/master/extras) section.
-
-## [1.3.12] 2016-03-17
-### Added
-- How to collaborate: send new links to the extras section
-
-## [1.3.11] 2016-03-06
-### Fixed
-- Nand to Tetris: change name and url
-- UC Berkeley Agile development: change name and url
-- Direct links to specializations
-
-## [1.3.10] 2016-03-06
-### Fixed
-- Link from Systematic Program Design Part 2 course
-
-## [1.3.9] 2015-11-09
-### Fixed
-- Link for the correct Natural Language Processing course
-
-## [1.3.8] 2015-11-07
-### Added
-- Add "Project Suggestions" section with more references
-
-## [1.3.7] 2015-11-01
-### Removed
-- Removed project.md file, moved to **help** repo
-
-## [1.3.6] 2015-10-22
-### Added
-- Latest version of CS 162, Operating Systems and System Programming
-
-## [1.2.6] 2015-10-19
-### Added
-- Badge/Link to the Awesome list
-
-## [1.2.5] 2015-10-16
-### Fixed
-- Fix name of the section and add a hyperlink to it.
-
-## [1.2.4] 2015-10-14
-### Removed
-- Removed citation about public commitment
-
-## [1.2.3] 2015-10-12
-### Changed
-- Updated the prerequisite section for more clarity
-
-## [1.2.2] 2015-10-12
-### Fixed
-- New link to issue intended for students' enrollment
-
-## [1.2.1] 2015-10-11
-### Added
-- Article Git - the simple guide to the prerequisite section
-
-##[1.1.1] 2015-10-11
-### Fixed
-- Fix typos
-  - As MOOC is a "Massive Open Online Course" MOOC course is redundant
-  - Elaborated on "real problem"
-  - Fixed a few small grammatical and wording errors
-
-## [1.1.0] 2015-10-08
-### Added
-- Motivation & Preparation section (optional resources)
-  - Article: MIT Challenge
-  - Course: Learning How to Learn
-
-## [1.0.0] 2015-10-08
-
-Release of the first **complete** version of the Computer Science curriculum
+> 📝 **译注**:以上为核心章节翻译(版本说明、语义化版本规则,以及 v6.0–v8.0.0 的主要变更)。更早的 v1.0.0–v5.1.0(2015-10 至 2016-08)为逐条课程链接修复与课程增删记录,细节繁多,此处未逐条翻译,完整内容请见[英文原版 CHANGELOG](https://github.com/ossu/computer-science/blob/master/CHANGELOG.md)。

@@ -1,28 +1,28 @@
 ---
-name: Request for Comment Template
-about: Template for creating an RFC to modify the curriculum
+name: 意见征求模板
+about: 用于创建 RFC 以修改课程体系的模板
 title: 'RFC: '
 labels: ''
 assignees: ''
 
 ---
 
-**Problem:**
-Give a 1 sentence description of a problem with the current OSSU Curriculum. Successful critiques of the curriculum will point out ways that OSSU is failing to uphold [our curricular guidelines](https://github.com/ossu/computer-science/blob/master/CURRICULAR_GUIDELINES.md). Examples are:
+**问题:**
+用一句话描述当前 OSSU 课程体系存在的一个问题。有说服力的批评应当指出 OSSU 在哪些方面未能遵守[我们的课程设计准则](https://github.com/ossu/computer-science/blob/master/CURRICULAR_GUIDELINES.md)。例如:
 
-* OSSU lists course X as required when the course's topics are elective in our curricular guidelines.
-* OSSU does not having a course to cover required topic X from our curricular guidelines.
-* OSSU lists courses X, Y and Z that cover the same topics when fewer courses could suffice.
-* OSSU recommends course X to teach a topic, but there exists a higher quality course that covers the same material.
+* 课程设计准则中某主题是选修,OSSU 却把课程 X 列为必修。
+* 课程设计准则要求覆盖必修主题 X,OSSU 却没有提供对应课程。
+* OSSU 列出的课程 X、Y、Z 内容重叠,其实更少的课程就够了。
+* OSSU 推荐课程 X 来教授某个主题,但存在质量更高、内容相当的课程。
 
-**Duration:**
-This should most often be 1 month from the date of posting.
+**期限:**
+通常为发布之日起 1 个月。
 
-**Background:**
-Give an in depth description of the problem. Describe a solution to the problem. Describe the advantages and disadvantages of this solution. This section should be a few paragraphs.
+**背景:**
+深入描述该问题,给出解决问题的方案,并分析该方案的优缺点。本节应写若干段落。
 
-**Proposal:**
-Give a bullet point list of changes that are being proposed. These can link to a Pull Request.
+**提案:**
+用要点列表列出提议的修改内容,可以附上 Pull Request 链接。
 
-**Alternatives:**
-Give a bullet point list of alternative ways to address the problem.
+**备选方案:**
+用要点列表列出解决该问题的其他可行方式。
